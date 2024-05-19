@@ -9,6 +9,11 @@ if (poster) {
   obj.caption = poster.caption;
   obj.color = poster.color;
 }
+
+function removeScriptTags(content) {
+  return content.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, '');
+}
+
 function div_default() {
   var el = '';
   el += '<article class="md-text">';
@@ -61,7 +66,15 @@ function div_default() {
   } else if (post.description) {
     el += post.description;
   } else if (post.content && theme.article.auto_excerpt > 0) {
-    el += truncate(strip_html(post.content), {length: theme.article.auto_excerpt});
+    // strip_html 是 hexo 提供 helper 工具函数
+    // 它只会清理字符串中的所有 HTML 标签。包括 <script></script> <link></link> 等
+    // 但是有一种情况是 strip_html 无法处理的
+    // <script>var a = '123'</script>
+    // 他只会删除 <script></script> 之间的内容，但是会保留 var a = '123'
+    // 这里只能单独处理，手动添加一个 自定义 removeScriptTags func
+    const strip_script = removeScriptTags(post.content);
+    let truncatedContent = truncate(strip_html(strip_script), {length: theme.article.auto_excerpt});
+    el += truncatedContent;
   }
   el += '</p>';
   el += '</div>';
@@ -136,5 +149,7 @@ function div() {
   }
   return div_default();
 }
+
+
 %>
 <%- div() %>
