@@ -320,7 +320,7 @@ plugins:
     auto_render_min_js: <script defer src="https://gcore.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"onload="renderMathInElement(document.body);"></script>
 
 style:
-  darkmode: auto # auto / always / false
+  darkmode: always # auto / always / false
   smooth_scroll: true # true / false
   font-size:
     root: 16px
